@@ -1,0 +1,165 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.3.3 effective-5.10 (swiftlang-6.3.3.1.3 clang-2100.1.1.101)
+// swift-module-flags: -target arm64-apple-ios15.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name SnaplyAgent
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.3.3
+import CoreImage
+import Foundation
+import MachO
+import Network
+import ObjectiveC
+import ReplayKit
+import Swift
+import SwiftUI
+import UIKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+import os
+public enum CaptureMode : Swift.String, Swift.Codable {
+  case askEveryTime
+  case perSession
+  case liveView
+  case wholeScreen
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct SnaplyUser {
+  public let id: Swift.String
+  public let name: Swift.String?
+  public init(id: Swift.String, name: Swift.String? = nil)
+}
+public struct CaptureResult : Swift.Codable {
+  public let captureId: Swift.String
+  public let imageUrl: Swift.String
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct SnaplyError : Swift.Error {
+  public let status: Swift.Int
+  public let code: Swift.String
+  public let message: Swift.String
+}
+public struct LiveSession {
+  public let sessionId: Swift.String
+}
+public struct SnaplyCallbacks {
+  public var onRequestShown: (() -> Swift.Void)?
+  public var onAllowed: ((SnaplyAgent.CaptureResult) -> Swift.Void)?
+  public var onDenied: (() -> Swift.Void)?
+  public var onExpired: (() -> Swift.Void)?
+  public var onError: ((any Swift.Error) -> Swift.Void)?
+  public var onRemoteControl: ((Swift.Bool) -> Swift.Void)?
+  public var onLiveEnded: ((SnaplyAgent.LiveSession) -> Swift.Void)?
+  public init(onRequestShown: (() -> Swift.Void)? = nil, onAllowed: ((SnaplyAgent.CaptureResult) -> Swift.Void)? = nil, onDenied: (() -> Swift.Void)? = nil, onExpired: (() -> Swift.Void)? = nil, onError: ((any Swift.Error) -> Swift.Void)? = nil, onRemoteControl: ((Swift.Bool) -> Swift.Void)? = nil, onLiveEnded: ((SnaplyAgent.LiveSession) -> Swift.Void)? = nil)
+}
+public struct SnaplyRedaction {
+  public var color: UIKit.UIColor
+  public var label: Swift.String
+  public var labelColor: UIKit.UIColor
+  public init(color: UIKit.UIColor = UIColor(red: 226 / 255, green: 59 / 255, blue: 55 / 255, alpha: 1), label: Swift.String = "REDACTED", labelColor: UIKit.UIColor = .white)
+}
+extension UIKit.UIView {
+  @_Concurrency.MainActor @preconcurrency public func snaplyRedact(color: UIKit.UIColor? = nil, label: Swift.String? = nil, labelColor: UIKit.UIColor? = nil)
+  @_Concurrency.MainActor @preconcurrency public var isSnaplyRedacted: Swift.Bool {
+    get
+    set
+  }
+}
+extension SwiftUICore.View {
+  @_Concurrency.MainActor @preconcurrency public func snaplyRedact(color: UIKit.UIColor? = nil, label: Swift.String? = nil, labelColor: UIKit.UIColor? = nil) -> some SwiftUICore.View
+  
+}
+public enum Snaply {
+  public static func configure(key: Swift.String, environment: SnaplyAgent.SnaplyEnvironment = .live, user: SnaplyAgent.SnaplyUser? = nil, collectVendorId: Swift.Bool = true, language: Swift.String = "en") async throws
+  public static func configure(key: Swift.String, environment: SnaplyAgent.SnaplyEnvironment = .live, user: SnaplyAgent.SnaplyUser? = nil, collectVendorId: Swift.Bool = true, language: Swift.String = "en", completion: (((any Swift.Error)?) -> Swift.Void)? = nil)
+  public static func on(_ callbacks: SnaplyAgent.SnaplyCallbacks)
+  public static func setRedactionStyle(_ style: SnaplyAgent.SnaplyRedaction)
+  @_Concurrency.MainActor public static func registerHostedView(_ view: UIKit.UIView, host: (any SnaplyAgent.SnaplyHostedView)?)
+  public static func identify(id: Swift.String, name: Swift.String? = nil, phone: Swift.String? = nil, identitySignature: Swift.String? = nil)
+  public static func reset()
+  public static func supportCode() -> Swift.String?
+  public static func showSupportCode()
+  public static func stop()
+}
+public enum SnaplyEnvironment {
+  case live
+  case custom(Foundation.URL)
+  public var url: Foundation.URL {
+    get
+  }
+}
+public protocol SnaplyHostedView : AnyObject {
+  var providesSnapshot: Swift.Bool { get }
+  var controlMode: SnaplyAgent.SnaplyHostedControlMode { get }
+  @_Concurrency.MainActor func snapshot(_ request: SnaplyAgent.SnaplyHostedSnapshotRequest, completion: @escaping (SnaplyAgent.SnaplyHostedSnapshot?) -> Swift.Void)
+  @_Concurrency.MainActor func control(_ input: SnaplyAgent.SnaplyHostedInput) -> Swift.Bool
+}
+extension SnaplyAgent.SnaplyHostedView {
+  public var providesSnapshot: Swift.Bool {
+    get
+  }
+  public var controlMode: SnaplyAgent.SnaplyHostedControlMode {
+    get
+  }
+  @_Concurrency.MainActor public func control(_ input: SnaplyAgent.SnaplyHostedInput) -> Swift.Bool
+}
+public enum SnaplyHostedControlMode {
+  case none
+  case fallback
+  case exclusive
+  public static func == (a: SnaplyAgent.SnaplyHostedControlMode, b: SnaplyAgent.SnaplyHostedControlMode) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public struct SnaplyHostedSnapshotRequest {
+  public let width: Swift.Int
+  public let height: Swift.Int
+  public let rules: [SnaplyAgent.SnaplyRedactionRule]
+}
+public struct SnaplyHostedSnapshot {
+  public let image: CoreGraphics.CGImage
+  public let redactions: [SnaplyAgent.SnaplyHostedRedaction]
+  public init(image: CoreGraphics.CGImage, redactions: [SnaplyAgent.SnaplyHostedRedaction] = [])
+}
+public struct SnaplyHostedRedaction {
+  public let bounds: CoreFoundation.CGRect
+  public let label: Swift.String?
+  public init(bounds: CoreFoundation.CGRect, label: Swift.String? = nil)
+}
+public struct SnaplyHostedInput {
+  public enum Action {
+    case tap
+    case scroll
+    case type
+    case key
+    public static func == (a: SnaplyAgent.SnaplyHostedInput.Action, b: SnaplyAgent.SnaplyHostedInput.Action) -> Swift.Bool
+    public func hash(into hasher: inout Swift.Hasher)
+    public var hashValue: Swift.Int {
+      get
+    }
+  }
+  public let action: SnaplyAgent.SnaplyHostedInput.Action
+  public let point: CoreFoundation.CGPoint
+  public let delta: CoreFoundation.CGPoint
+  public let text: Swift.String?
+  public let key: Swift.String?
+}
+public struct SnaplyRedactionRule {
+  public static let kindIdentifier: Swift.String
+  public static let kindText: Swift.String
+  public let kind: Swift.String
+  public let value: Swift.String
+  public let label: Swift.String?
+}
+extension SnaplyAgent.CaptureMode : Swift.Equatable {}
+extension SnaplyAgent.CaptureMode : Swift.Hashable {}
+extension SnaplyAgent.CaptureMode : Swift.RawRepresentable {}
+extension SnaplyAgent.SnaplyHostedControlMode : Swift.Equatable {}
+extension SnaplyAgent.SnaplyHostedControlMode : Swift.Hashable {}
+extension SnaplyAgent.SnaplyHostedInput.Action : Swift.Equatable {}
+extension SnaplyAgent.SnaplyHostedInput.Action : Swift.Hashable {}

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  PrivacyInfo.xcprivacy — SnaplyAgent iOS SDK
+
+  Apple requires a privacy manifest from every third-party SDK, and requires the host app to
+  aggregate ours into its own nutrition label. Two things are declared here:
+
+  1. NSPrivacyAccessedAPITypes — the "required reason" APIs we call. UserDefaults is one; the SDK
+     stores `installId` there (a random UUID scoped to this app + product key) so a device stays
+     recognisable across cold launches. CA92.1 is the correct reason: access is limited to this
+     app's own defaults, never an app-group container.
+
+  2. NSPrivacyCollectedDataTypes — what the SDK sends. NSPrivacyCollectedDataTypeDeviceID is
+     declared because the SDK CAN send the vendor identifier (IDFV), and a manifest must describe
+     what the code is capable of, not what one integration happened to enable. It is ON by default;
+     an app opts out with `Snaply.configure(collectVendorId: false)`. Because it is on by default,
+     the host app must declare Identifiers → Device ID in its own App Privacy label — Apple reviews
+     the app, and this manifest covers only the SDK.
+
+  Every entry is Tracking=false and has NO NSPrivacyCollectedDataTypeTracking domains: nothing here
+  is linked to third-party data or used for advertising. The data serves the support session the
+  user has already consented to, inside the customer's own workspace.
+-->
+<plist version="1.0">
+<dict>
+    <key>NSPrivacyTracking</key>
+    <false/>
+    <key>NSPrivacyTrackingDomains</key>
+    <array/>
+    <key>NSPrivacyAccessedAPITypes</key>
+    <array>
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <!-- CA92.1: read/write only this app's own defaults. -->
+                <string>CA92.1</string>
+            </array>
+        </dict>
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategoryDiskSpace</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <!-- E174.1: free space shown to the support agent on the device-health card, so a
+                     "the app keeps failing to save" call can be diagnosed. Displayed, never shipped
+                     onward or used to derive an identifier. -->
+                <string>E174.1</string>
+            </array>
+        </dict>
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategorySystemBootTime</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <!-- 35F9.1: ProcessInfo.systemUptime measures elapsed time inside the SDK — the live
+                     frame pacing in SnaplyClient and the whole-screen capture's frame clock — and is
+                     never sent, shown or combined into an identifier. Declared since 2.44.1 (audit
+                     SEC-2610-71): 2.43.1 and 2.44.0 called it undeclared, and every host app's
+                     upload failed with ITMS-91053. -->
+                <string>35F9.1</string>
+            </array>
+        </dict>
+    </array>
+    <key>NSPrivacyCollectedDataTypes</key>
+    <array>
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypeDeviceID</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <true/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+        <!-- SEC-2609-51: `identify(id:name:phone:)` sends a user id, a name and a phone number, and
+             registration sends userId/userName. None of the three were declared. The manifest's own
+             rule, stated for DeviceID above, applies identically: it must describe what the code is
+             CAPABLE of, not what one integration happened to enable. Apple aggregates this file into
+             the host app's privacy label, so an undeclared-but-transmitted type is the host app's
+             accuracy problem, not only ours. -->
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypeName</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <true/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypePhoneNumber</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <true/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypeUserID</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <true/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypeOtherDiagnosticData</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <true/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypePhotosorVideos</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <true/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+    </array>
+</dict>
+</plist>

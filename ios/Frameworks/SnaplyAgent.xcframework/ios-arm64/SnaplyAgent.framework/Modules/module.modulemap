@@ -1,0 +1,3 @@
+framework module SnaplyAgent {
+  header "SnaplyAgent-Swift.h"
+}
