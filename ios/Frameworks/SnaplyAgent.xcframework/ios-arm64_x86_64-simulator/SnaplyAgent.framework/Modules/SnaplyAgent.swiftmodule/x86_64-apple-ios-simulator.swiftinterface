@@ -15,46 +15,6 @@ import _Concurrency
 import _StringProcessing
 import _SwiftConcurrencyShims
 import os
-public enum CaptureMode : Swift.String, Swift.Codable {
-  case askEveryTime
-  case perSession
-  case liveView
-  case wholeScreen
-  public init?(rawValue: Swift.String)
-  public typealias RawValue = Swift.String
-  public var rawValue: Swift.String {
-    get
-  }
-}
-public struct SnaplyUser {
-  public let id: Swift.String
-  public let name: Swift.String?
-  public init(id: Swift.String, name: Swift.String? = nil)
-}
-public struct CaptureResult : Swift.Codable {
-  public let captureId: Swift.String
-  public let imageUrl: Swift.String
-  public func encode(to encoder: any Swift.Encoder) throws
-  public init(from decoder: any Swift.Decoder) throws
-}
-public struct SnaplyError : Swift.Error {
-  public let status: Swift.Int
-  public let code: Swift.String
-  public let message: Swift.String
-}
-public struct LiveSession {
-  public let sessionId: Swift.String
-}
-public struct SnaplyCallbacks {
-  public var onRequestShown: (() -> Swift.Void)?
-  public var onAllowed: ((SnaplyAgent.CaptureResult) -> Swift.Void)?
-  public var onDenied: (() -> Swift.Void)?
-  public var onExpired: (() -> Swift.Void)?
-  public var onError: ((any Swift.Error) -> Swift.Void)?
-  public var onRemoteControl: ((Swift.Bool) -> Swift.Void)?
-  public var onLiveEnded: ((SnaplyAgent.LiveSession) -> Swift.Void)?
-  public init(onRequestShown: (() -> Swift.Void)? = nil, onAllowed: ((SnaplyAgent.CaptureResult) -> Swift.Void)? = nil, onDenied: (() -> Swift.Void)? = nil, onExpired: (() -> Swift.Void)? = nil, onError: ((any Swift.Error) -> Swift.Void)? = nil, onRemoteControl: ((Swift.Bool) -> Swift.Void)? = nil, onLiveEnded: ((SnaplyAgent.LiveSession) -> Swift.Void)? = nil)
-}
 public struct SnaplyRedaction {
   public var color: UIKit.UIColor
   public var label: Swift.String
@@ -156,10 +116,50 @@ public struct SnaplyRedactionRule {
   public let value: Swift.String
   public let label: Swift.String?
 }
-extension SnaplyAgent.CaptureMode : Swift.Equatable {}
-extension SnaplyAgent.CaptureMode : Swift.Hashable {}
-extension SnaplyAgent.CaptureMode : Swift.RawRepresentable {}
+public enum CaptureMode : Swift.String, Swift.Codable {
+  case askEveryTime
+  case perSession
+  case liveView
+  case wholeScreen
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct SnaplyUser {
+  public let id: Swift.String
+  public let name: Swift.String?
+  public init(id: Swift.String, name: Swift.String? = nil)
+}
+public struct CaptureResult : Swift.Codable {
+  public let captureId: Swift.String
+  public let imageUrl: Swift.String
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct SnaplyError : Swift.Error {
+  public let status: Swift.Int
+  public let code: Swift.String
+  public let message: Swift.String
+}
+public struct LiveSession {
+  public let sessionId: Swift.String
+}
+public struct SnaplyCallbacks {
+  public var onRequestShown: (() -> Swift.Void)?
+  public var onAllowed: ((SnaplyAgent.CaptureResult) -> Swift.Void)?
+  public var onDenied: (() -> Swift.Void)?
+  public var onExpired: (() -> Swift.Void)?
+  public var onError: ((any Swift.Error) -> Swift.Void)?
+  public var onRemoteControl: ((Swift.Bool) -> Swift.Void)?
+  public var onLiveEnded: ((SnaplyAgent.LiveSession) -> Swift.Void)?
+  public init(onRequestShown: (() -> Swift.Void)? = nil, onAllowed: ((SnaplyAgent.CaptureResult) -> Swift.Void)? = nil, onDenied: (() -> Swift.Void)? = nil, onExpired: (() -> Swift.Void)? = nil, onError: ((any Swift.Error) -> Swift.Void)? = nil, onRemoteControl: ((Swift.Bool) -> Swift.Void)? = nil, onLiveEnded: ((SnaplyAgent.LiveSession) -> Swift.Void)? = nil)
+}
 extension SnaplyAgent.SnaplyHostedControlMode : Swift.Equatable {}
 extension SnaplyAgent.SnaplyHostedControlMode : Swift.Hashable {}
 extension SnaplyAgent.SnaplyHostedInput.Action : Swift.Equatable {}
 extension SnaplyAgent.SnaplyHostedInput.Action : Swift.Hashable {}
+extension SnaplyAgent.CaptureMode : Swift.Equatable {}
+extension SnaplyAgent.CaptureMode : Swift.Hashable {}
+extension SnaplyAgent.CaptureMode : Swift.RawRepresentable {}

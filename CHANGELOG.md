@@ -1,3 +1,12 @@
+## 1.0.1
+
+Carries the Snaply Agent iOS SDK 2.49.1 and brings the Android SDK 2.40.1 from Maven Central. No change to the
+JavaScript API.
+
+* The consent record fixes of both SDKs: an Allow that never reached Snaply is not kept, a live session lost
+  mid-way needs a new Allow, and a screenshot approval never lasts past 45 minutes.
+* iOS: the framework inside the package no longer carries the compiler's ABI descriptor files (`.abi.json`).
+
 ## 1.0.0
 
 The first release. Carries the Snaply Agent iOS SDK 2.48.0 and brings the Android SDK 2.39.0 from Maven Central.
