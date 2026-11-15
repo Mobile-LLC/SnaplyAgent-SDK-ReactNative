@@ -29,5 +29,5 @@ android {
 dependencies {
     implementation "com.facebook.react:react-android"
     // api: an app that also calls the native SDK compiles against the same version.
-    api "com.snaplyagent:agent:2.40.1"
+    api "com.snaplyagent:agent:2.41.0"
 }
