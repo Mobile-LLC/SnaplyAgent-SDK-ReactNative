@@ -10,8 +10,8 @@
 #  one that does not match the checksums its own release recorded (the annotated tag of
 #  Mobile-LLC/SnaplyAgent-SDK-iOS names the sha256 of each slice's binary).
 #
-#  Usage:  scripts/vendor-ios-sdk.sh 2.50.0
-#          scripts/vendor-ios-sdk.sh --check 2.50.0     compare what is here; change nothing
+#  Usage:  scripts/vendor-ios-sdk.sh 2.51.0
+#          scripts/vendor-ios-sdk.sh --check 2.51.0     compare what is here; change nothing
 #
 #  SNAPLY_IOS_SDK_REMOTE points at another copy of that repository (a local one, for a test).
 #
@@ -19,7 +19,7 @@ set -euo pipefail
 
 CHECK=0
 if [ "${1:-}" = "--check" ]; then CHECK=1; shift; fi
-VERSION="${1:?usage: scripts/vendor-ios-sdk.sh [--check] <version>   e.g. scripts/vendor-ios-sdk.sh 2.50.0}"
+VERSION="${1:?usage: scripts/vendor-ios-sdk.sh [--check] <version>   e.g. scripts/vendor-ios-sdk.sh 2.51.0}"
 REMOTE="${SNAPLY_IOS_SDK_REMOTE:-https://github.com/Mobile-LLC/SnaplyAgent-SDK-iOS.git}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 HERE="$ROOT/ios/Frameworks/SnaplyAgent.xcframework"

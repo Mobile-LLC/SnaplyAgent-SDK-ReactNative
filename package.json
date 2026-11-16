@@ -1,7 +1,7 @@
 {
   "name": "@snaplyagent/react-native",
-  "version": "1.1.0",
-  "description": "Snaply Agent for React Native \u2014 consent-first screen capture for support teams: screenshots, live view and remote control, with on-device redaction.",
+  "version": "1.2.0",
+  "description": "Snaply Agent for React Native — consent-first screen capture for support teams: screenshots, live view and remote control, with on-device redaction.",
   "main": "src/index.tsx",
   "react-native": "src/index.tsx",
   "types": "src/index.tsx",
