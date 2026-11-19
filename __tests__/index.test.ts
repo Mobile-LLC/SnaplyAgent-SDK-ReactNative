@@ -30,13 +30,14 @@ jest.mock('../src/NativeSnaplyAgent', () => ({
   },
 }));
 
-import { Snaply, SnaplyError } from '../src/index';
+import { Snaply, SnaplyDevelopmentMaster, SnaplyError } from '../src/index';
 
 describe('Snaply', () => {
-  it('configure sends the key, the host, the user and the options', async () => {
+  it('configure sends the key, the host with its master keys, the user and the options', async () => {
     await Snaply.configure({
       key: 'snap_live_abc',
       environment: 'http://10.0.2.2:5100',
+      serverKeys: [SnaplyDevelopmentMaster],
       user: { id: 'usr_1', name: 'Maya' },
       collectVendorId: false,
       language: 'hy',
@@ -48,6 +49,9 @@ describe('Snaply', () => {
       'Maya',
       false,
       'hy',
+      [
+        'BBfK1HoW7C4QbWBHQYk3qP3TJRqyEh9gBw4lp2tmOR3H69m_YdmU24iYVDbWZ_0uqNqKiDwtvY7OfvVpwGBcLzA',
+      ],
     );
   });
 
@@ -60,6 +64,7 @@ describe('Snaply', () => {
       null,
       true,
       'en',
+      [],
     );
   });
 

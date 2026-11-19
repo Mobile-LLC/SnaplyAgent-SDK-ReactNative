@@ -28,6 +28,7 @@ export interface Spec extends TurboModule {
     userName: string | null,
     collectVendorId: boolean,
     language: string,
+    serverKeys: Array<string>,
   ): Promise<void>;
   identify(
     id: string,

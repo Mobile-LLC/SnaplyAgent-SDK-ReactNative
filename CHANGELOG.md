@@ -1,3 +1,14 @@
+## Unreleased
+
+Everything the SDK and Snaply's server exchange is sealed a second time inside HTTPS. The native SDKs do it and this
+package carries them; its number and theirs are set the day it ships.
+
+* New option `serverKeys` and the export `SnaplyDevelopmentMaster`, for a Snaply server other than the live one: that
+  server's master public keys travel with its address (`environment`). An app that talks to the live server changes
+  nothing.
+* Not built against the sealing native SDKs yet: the bridge code compiles only once this package carries them (the
+  iOS framework in `ios/Frameworks`, the Android SDK's version in `android/build.gradle`).
+
 ## 1.2.0
 
 Carries the Snaply Agent iOS SDK 2.51.0 and brings the Android SDK 2.42.0 from Maven Central. No change to the

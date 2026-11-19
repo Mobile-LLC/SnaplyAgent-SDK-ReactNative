@@ -11,6 +11,7 @@ package com.snaplyagent.reactnative
 import com.facebook.react.bridge.Arguments
 import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
+import com.facebook.react.bridge.ReadableArray
 import com.facebook.react.bridge.UiThreadUtil
 import com.facebook.react.bridge.WritableMap
 import com.facebook.react.module.annotations.ReactModule
@@ -27,7 +28,16 @@ import com.snaply.agent.SnaplyUser
 class SnaplyAgentModule(reactContext: ReactApplicationContext) : NativeSnaplyAgentSpec(reactContext) {
     override fun getName(): String = NAME
 
-    override fun configure(key: String, host: String?, userId: String?, userName: String?, collectVendorId: Boolean, language: String, promise: Promise) {
+    override fun configure(
+        key: String,
+        host: String?,
+        userId: String?,
+        userName: String?,
+        collectVendorId: Boolean,
+        language: String,
+        serverKeys: ReadableArray,
+        promise: Promise,
+    ) {
         UiThreadUtil.runOnUiThread {
             try {
                 Snaply.on(callbacks)
@@ -36,7 +46,7 @@ class SnaplyAgentModule(reactContext: ReactApplicationContext) : NativeSnaplyAge
                 Snaply.init(
                     context = reactApplicationContext.currentActivity ?: reactApplicationContext,
                     key = key,
-                    environment = host?.let { SnaplyEnvironment.Custom(it) } ?: SnaplyEnvironment.Live,
+                    environment = host?.let { SnaplyEnvironment.Custom(it, serverKeys.toArrayList().map(Any?::toString)) } ?: SnaplyEnvironment.Live,
                     user = userId?.let { SnaplyUser(it, userName) },
                     collectVendorId = collectVendorId,
                     language = language,

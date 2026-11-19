@@ -86,6 +86,7 @@ static BOOL SnaplyRelayTap(UIView *surface, CGPoint point)
          userName:(NSString *)userName
   collectVendorId:(BOOL)collectVendorId
          language:(NSString *)language
+       serverKeys:(NSArray *)serverKeys
           resolve:(RCTPromiseResolveBlock)resolve
            reject:(RCTPromiseRejectBlock)reject
 {
@@ -102,6 +103,7 @@ static BOOL SnaplyRelayTap(UIView *surface, CGPoint point)
                         userName:userName
                  collectVendorId:collectVendorId
                         language:language
+                      serverKeys:serverKeys
                       completion:^(NSString *code, NSString *message, NSInteger status) {
                         if (code == nil) {
                           resolve(nil);

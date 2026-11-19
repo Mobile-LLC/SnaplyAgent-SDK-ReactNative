@@ -27,11 +27,23 @@ export type SnaplyUser = { id: string; name?: string };
 
 export type SnaplyCapture = { captureId: string; imageUrl: string };
 
+/**
+ * The master key of a Snaply stack running on your own machine. It is published in the source and a secret on no
+ * machine: pass it in `serverKeys` only together with the address of such a stack.
+ */
+export const SnaplyDevelopmentMaster =
+  'BBfK1HoW7C4QbWBHQYk3qP3TJRqyEh9gBw4lp2tmOR3H69m_YdmU24iYVDbWZ_0uqNqKiDwtvY7OfvVpwGBcLzA';
+
 export type SnaplyConfiguration = {
   /** Console → Products → your product → API key. An iOS and an Android product each have their own. */
   key: string;
   /** A self-hosted host, or a backend on your own machine. Plain `http` is accepted for loopback only. */
   environment?: string;
+  /**
+   * The master public keys of the server at `environment` (base64url). Everything the SDK and its server exchange
+   * is sealed to keys those masters vouch for; the live server's are built in, another server brings its own.
+   */
+  serverKeys?: string[];
   user?: SnaplyUser;
   collectVendorId?: boolean;
   language?: string;
@@ -118,6 +130,7 @@ export const Snaply = {
         configuration.user?.name ?? null,
         configuration.collectVendorId ?? true,
         configuration.language ?? 'en',
+        configuration.serverKeys ?? [],
       );
     } catch (error) {
       const native = error as {

@@ -27,13 +27,14 @@ public final class SnaplyBridge: NSObject {
         userName: String?,
         collectVendorId: Bool,
         language: String,
+        serverKeys: [String],
         completion: @escaping (String?, String?, Int) -> Void
     ) {
         onMain {
             var environment = SnaplyEnvironment.live
             if let host {
                 guard let url = URL(string: host) else { return completion("insecure_environment", "environment is not a URL.", 0) }
-                environment = .custom(url)
+                environment = .custom(url, serverKeys: serverKeys)
             }
             Snaply.on(callbacks)
             self.host.attach()
