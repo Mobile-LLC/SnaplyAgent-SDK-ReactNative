@@ -50,6 +50,25 @@ Add the app's identifier (bundle id, package name) to each product's allowed lis
 `configure` rejects with `origin_mismatch`. On Android `configure` resolves as soon as the SDK has
 started; a refused registration arrives through `onError`.
 
+## A Snaply server of your own
+
+Everything the SDK and Snaply's server exchange is sealed a second time inside HTTPS, and the live server's keys are
+built in: an app that talks to the live server has nothing to set. A server of your own is named with its address
+and its master public keys together — without the keys the SDK sends nothing and reports `no_master_key`.
+
+```tsx
+import { Snaply, SnaplyDevelopmentMaster } from '@snaplyagent/react-native';
+
+await Snaply.configure({
+  key,
+  environment: 'https://snaply.your-company.example',
+  serverKeys: ['<your server's master public key>'],
+});
+
+// A Snaply stack on your own machine uses one published key, good for nothing else:
+await Snaply.configure({ key, environment: 'http://localhost:5100', serverKeys: [SnaplyDevelopmentMaster] });
+```
+
 ## What is hidden
 
 A React Native screen is native views, so the native SDKs capture it and hide fields in it as in any

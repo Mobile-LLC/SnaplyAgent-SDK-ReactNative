@@ -3,6 +3,7 @@
 // swift-module-flags: -target x86_64-apple-ios15.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -O -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -module-name SnaplyAgent
 // swift-module-flags-ignorable: -no-verify-emitted-module-interface -formal-cxx-interoperability-mode=off -interface-compiler-version 6.3.3
 import CoreImage
+import CryptoKit
 import Foundation
 import MachO
 import Network
@@ -46,7 +47,8 @@ public enum Snaply {
 }
 public enum SnaplyEnvironment {
   case live
-  case custom(Foundation.URL)
+  case custom(Foundation.URL, serverKeys: [Swift.String])
+  public static let developmentMaster: Swift.String
   public var url: Foundation.URL {
     get
   }
