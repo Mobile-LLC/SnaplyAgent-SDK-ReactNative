@@ -9,6 +9,7 @@ import MachO
 import Network
 import ObjectiveC
 import ReplayKit
+import Security
 import Swift
 import SwiftUI
 import UIKit
